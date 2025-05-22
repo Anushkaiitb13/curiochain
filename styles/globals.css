@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 10% 3.9%; /* Dark blue-gray */
+    --foreground: 210 20% 98%; /* Light gray/white */
+    
+    --card: 240 10% 6%; /* Slightly lighter dark blue */
+    --card-foreground: 210 20% 98%;
+    
+    --popover: 240 10% 6%; /* Slightly lighter dark blue */
+    --popover-foreground: 210 20% 98%;
+    
+    --primary: 180 80% 60%; /* Turquoise */
+    --primary-foreground: 210 20% 98%;
+    
+    --secondary: 240 15% 12%; /* Dark blue-gray */
+    --secondary-foreground: 210 20% 98%;
+    
+    --muted: 240 10% 10%; /* Dark blue-gray */
+    --muted-foreground: 240 10% 70%; /* Light gray */
+    
+    --accent: 270 60% 70%; /* Light purple */
+    --accent-foreground: 210 20% 98%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 240 10% 15%; /* Dark border */
+    --input: 240 10% 15%;
+    --ring: 180 80% 60%; /* Turquoise */
+    
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-nunito font-semibold;
+  }
+
+  .topic-card {
+    @apply relative overflow-hidden bg-card rounded-xl border border-primary/40 transition-all shadow-sm hover:shadow-md hover:border-primary hover:-translate-y-1 cursor-pointer;
+  }
+
+  .card-gradient {
+    @apply bg-gradient-to-br from-secondary to-background;
+  }
+
+  .node-card {
+    @apply bg-card bg-opacity-90 backdrop-blur-sm rounded-xl border border-border shadow-sm hover:shadow-md;
+  }
+
+  .search-ring {
+    @apply focus-within:ring-2 focus-within:ring-primary focus-within:ring-opacity-50;
+  }
+
+  .scroll-hidden {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  .scroll-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  .knowledge-node {
+    @apply rounded-full cursor-pointer transition-all hover:scale-110;
+  }
+  
+  .knowledge-link {
+    @apply stroke-accent stroke-[1.5];
+  }
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.5s ease-out forwards;
+}
+
+.animate-delay-1 {
+  animation-delay: 0.1s;
+}
+
+.animate-delay-2 {
+  animation-delay: 0.2s;
+}
+
+.animate-delay-3 {
+  animation-delay: 0.3s;
+}
+
+.animate-delay-4 {
+  animation-delay: 0.4s;
+}
+
+/* Glass morphism effects for dark mode */
+.glass-effect {
+  @apply backdrop-blur-sm bg-background/40 border border-white/10;
+}
+
+.glow-effect {
+  text-shadow: 0 0 15px rgba(80, 220, 220, 0.6); /* Turquoise glow */
+}
+
+/* Game-like enhancements */
+.game-heading {
+  text-shadow: 0 0 10px rgba(51, 195, 240, 0.8), 0 0 20px rgba(51, 195, 240, 0.4);
+  letter-spacing: 1px;
+}
+
+.game-subheading {
+  text-shadow: 0 0 8px rgba(139, 92, 246, 0.8);
+  letter-spacing: 0.5px;
+}
+
+/* Space/sci-fi effects */
+.space-gradient {
+  @apply bg-gradient-to-br from-accent/30 to-primary/30;
+}
+
+.space-border {
+  @apply border border-primary/30 shadow-[0_0_15px_rgba(80,220,220,0.2)];
+}
+
+.space-glow {
+  text-shadow: 0 0 8px rgba(180, 240, 240, 0.6);
+}
+
+/* Add pulsing effect */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 10px rgba(80, 220, 220, 0.6);
+  }
+  50% {
+    opacity: 0.8;
+    text-shadow: 0 0 20px rgba(80, 220, 220, 0.8);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 3s infinite ease-in-out;
+}

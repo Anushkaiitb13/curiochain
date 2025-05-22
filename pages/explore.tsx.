@@ -1,0 +1,139 @@
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import Header from '../components/layout/Header';
+import Footer from '../components/layout/Footer';
+import KnowledgeGraph from '../components/ui/KnowledgeGraph';
+import NodeDetailCard from '../components/ui/NodeDetailCard';
+
+// Mock data
+const topics = {
+  '1': {
+    title: 'Quantum Physics',
+    nodes: [
+      { id: '1', label: 'Quantum Mechanics', level: 0, description: 'The fundamental theory governing the microscopic world.' },
+      { id: '2', label: 'Wave-Particle Duality', level: 1, description: 'The concept that every particle exhibits both wave and particle properties.' },
+      { id: '3', label: 'Uncertainty Principle', level: 1, description: 'Formulated by Werner Heisenberg, it states that the position and momentum of a particle cannot both be precisely determined.' },
+      { id: '4', label: 'Quantum Entanglement', level: 2, description: 'A phenomenon where particles become correlated in such a way that the quantum state of each particle cannot be described independently.' },
+      { id: '5', label: 'Quantum Computing', level: 2, description: 'Computing using quantum-mechanical phenomena such as superposition and entanglement.' },
+      { id: '6', label: 'String Theory', level: 3, description: 'A theoretical framework in which point-like particles are replaced by one-dimensional objects called strings.' },
+    ],
+    links: [
+      { source: '1', target: '2' },
+      { source: '1', target: '3' },
+      { source: '2', target: '4' },
+      { source: '3', target: '4' },
+      { source: '4', target: '5' },
+      { source: '1', target: '5' },
+      { source: '2', target: '6' },
+      { source: '5', target: '6' },
+    ]
+  },
+  '2': {
+    title: 'AI & Ethics',
+    nodes: [
+      { id: '1', label: 'AI Ethics', level: 0, description: 'The branch of ethics that studies creating AI that aligns with human values.' },
+      { id: '2', label: 'Algorithmic Bias', level: 1, description: 'When algorithms produce systematically prejudiced results.' },
+      { id: '3', label: 'Privacy Concerns', level: 1, description: 'Issues related to data collection and usage by AI systems.' },
+      { id: '4', label: 'Automation & Jobs', level: 2, description: 'The impact of AI automation on employment and the workforce.' },
+      { id: '5', label: 'AI Governance', level: 2, description: 'Policies and regulations for AI development and deployment.' },
+      { id: '6', label: 'Explainable AI', level: 1, description: 'AI systems whose actions can be easily understood by humans.' },
+    ],
+    links: [
+      { source: '1', target: '2' },
+      { source: '1', target: '3' },
+      { source: '1', target: '6' },
+      { source: '2', target: '5' },
+      { source: '3', target: '5' },
+      { source: '1', target: '4' },
+      { source: '4', target: '5' },
+      { source: '6', target: '2' },
+    ]
+  },
+  // More topics can be added here
+};
+
+const LearningPath: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const [selectedNode, setSelectedNode] = useState<null | { id: string, label: string, description: string }>(null);
+  
+  // Default to the first topic if id doesn't match
+  const topicData = topics[id as keyof typeof topics] || topics['1'];
+
+  const handleNodeClick = (node: { id: string, label: string, description: string }) => {
+    setSelectedNode(node);
+  };
+
+  const handleNodeClose = () => {
+    setSelectedNode(null);
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      
+      <main className="flex-grow container mx-auto px-4 py-8">
+        <div className="mb-8 animate-fade-in">
+          <h1 className="text-3xl md:text-4xl font-bold text-curio-900 mb-2">{topicData.title}</h1>
+          <p className="text-lg text-muted-foreground">
+            Explore the interconnected concepts of {topicData.title.toLowerCase()} through this interactive knowledge map.
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className="lg:col-span-3 bg-white rounded-xl border border-border shadow-sm p-4 h-[600px] animate-fade-in">
+            <KnowledgeGraph 
+              nodes={topicData.nodes} 
+              links={topicData.links}
+              onNodeClick={handleNodeClick} 
+            />
+          </div>
+          
+          <div className="animate-fade-in">
+            <div className="sticky top-24">
+              {selectedNode ? (
+                <NodeDetailCard 
+                  title={selectedNode.label}
+                  description={selectedNode.description}
+                  onClose={handleNodeClose}
+                />
+              ) : (
+                <div className="bg-curio-50 rounded-xl p-4 border border-border">
+                  <h2 className="text-lg font-semibold text-curio-900 mb-2">How to navigate</h2>
+                  <ul className="text-sm text-muted-foreground space-y-2">
+                    <li>• Click on nodes to explore concepts</li>
+                    <li>• Follow connections between related ideas</li>
+                    <li>• Drag to pan the view</li>
+                    <li>• Scroll to zoom in/out</li>
+                  </ul>
+                </div>
+              )}
+              
+              <div className="mt-6 bg-white rounded-xl border border-border p-4">
+                <h2 className="text-lg font-semibold text-curio-900 mb-3">Related Topics</h2>
+                <div className="space-y-2">
+                  {Object.entries(topics)
+                    .filter(([topicId]) => topicId !== id)
+                    .slice(0, 3)
+                    .map(([topicId, topic]) => (
+                      <a 
+                        key={topicId}
+                        href={`/path/${topicId}`}
+                        className="block p-2 hover:bg-curio-50 rounded-lg transition-colors"
+                      >
+                        <span className="font-medium text-curio-700">{topic.title}</span>
+                      </a>
+                    ))
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      
+      <Footer />
+    </div>
+  );
+};
+
+export default LearningPath;
