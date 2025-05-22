@@ -1,7 +1,19 @@
 import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+import  './styles/globals.css'; 
 import Footer from '../components/layout/Footer';
 import TopicCarousel from '../components/ui/TopicCarousel';
 import { Search } from 'lucide-react';
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>
+);
 
 const Index: React.FC = () => {
   // Mock data for trending topics
